@@ -6,25 +6,31 @@
     <script>
         (function () {
             if (typeof eruda === 'undefined') return;
-            let erudaConfig = {};
+            let el = document.createElement('div');
+            document.body.appendChild(el);
+
+            eruda.init({
+                container: el,
+                tool: ['console', 'elements', 'network', 'resources', 'info', 'settings'],
+                useShadowDom: true
+            });
+
             try {
-                const savedConfig = localStorage.getItem('eruda-config');
-                if (savedConfig) {
-                    erudaConfig = JSON.parse(savedConfig);
+                const savedSettings = localStorage.getItem('eruda-settings');
+                if (savedSettings) {
+                    eruda.get('settings').set(JSON.parse(savedSettings));
                 }
             } catch (e) {
-                console.error('Could not parse Eruda config from localStorage', e);
+                console.error('Could not apply Eruda settings from localStorage', e);
             }
-            eruda.init({
-                defaults: erudaConfig
-            });
+
             const settings = eruda.get('settings');
             if (settings) {
                 let isInitialized = false;
                 settings.on('change', () => {
                     if (isInitialized) {
-                        const currentConfig = settings.getAll();
-                        localStorage.setItem('eruda-config', JSON.stringify(currentConfig));
+                        const currentSettings = settings.getAll();
+                        localStorage.setItem('eruda-settings', JSON.stringify(currentSettings));
                     }
                     isInitialized = true;
                 });
