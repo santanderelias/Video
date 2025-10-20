@@ -56,3 +56,16 @@ body {
         padding: 40px;
     }
 }
+
+#version-display {
+    position: fixed;
+    bottom: 5px;
+    right: 5px;
+    padding: 2px 5px;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: #ccc;
+    font-size: 10px;
+    font-family: monospace;
+    border-radius: 3px;
+    z-index: 9999;
+}
