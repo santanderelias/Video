@@ -1,6 +1,6 @@
 const CACHE_NAME = 'video-player-cache-v1';
 const urlsToCache = [
-    '/',
+    '.', // Use '.' to refer to the current directory
     'index.html',
     'style.css',
     'script.js',

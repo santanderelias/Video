@@ -1,19 +1,20 @@
 document.addEventListener('DOMContentLoaded', () => {
     const player = videojs('my-video');
+    let currentObjectUrl = null; // Keep track of the current object URL
 
     // --- Helper function to play a file ---
     const playFile = (file) => {
+        // Revoke the old object URL to free up memory
+        if (currentObjectUrl) {
+            URL.revokeObjectURL(currentObjectUrl);
+        }
+
         const fileURL = URL.createObjectURL(file);
+        currentObjectUrl = fileURL; // Store the new URL
         const fileType = file.type;
 
         player.src({ src: fileURL, type: fileType });
         player.play();
-
-        // When the player is disposed (e.g., a new video is loaded),
-        // revoke the object URL to free up memory.
-        player.one('dispose', () => {
-            URL.revokeObjectURL(fileURL);
-        });
     };
 
     // 1. PWA Service Worker Registration
