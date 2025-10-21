@@ -6,16 +6,11 @@
   "background_color": "#121212",
   "theme_color": "#007bff",
   "description": "A simple PWA video player.",
-  "version": "1.0",
+  "version": "1.1",
   "icons": [
     {
       "src": "icons/icon-192x192.png",
       "sizes": "192x192",
-      "type": "image/png"
-    },
-    {
-      "src": "icons/icon-512x512.png",
-      "sizes": "512x512",
       "type": "image/png"
     }
   ],
@@ -36,14 +31,7 @@
     {
       "action": "index.html",
       "accept": {
-        "video/*": [
-          ".mp4",
-          ".webm",
-          ".ogg",
-          ".mov",
-          ".mkv",
-          ".avi"
-        ]
+        "video/*": []
       }
     }
   ]
