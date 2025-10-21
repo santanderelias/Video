@@ -1,4 +1,4 @@
-const CACHE_NAME = 'video-player-cache-v2'; // Increment version
+const CACHE_NAME = 'video-player-cache-v3'; // Increment version
 const urlsToCache = [
     '.', // Use '.' to refer to the current directory
     'index.html',
@@ -48,20 +48,28 @@ self.addEventListener('fetch', event => {
     // If the request is a POST to the app's origin, it's the share target.
     if (event.request.method === 'POST' && url.origin === self.location.origin) {
         event.respondWith(async function() {
+            console.log('SW: Intercepted POST request for share target.');
             const formData = await event.request.formData();
             const files = formData.getAll('video'); // 'video' is the name from manifest.json params
+            console.log('SW: FormData parsed. Found files:', files.length);
 
             if (files.length > 0) {
                 const client = await self.clients.get(event.clientId);
                 if (client) {
+                    console.log('SW: Client found. Sending message to client.');
                     // Send each file as a Blob to the client
                     for (const file of files) {
                         client.postMessage({
                             type: 'shared-file',
                             file: file
                         });
+                        console.log('SW: Sent file:', file.name, 'to client.');
                     }
+                } else {
+                    console.log('SW: No client found for event.clientId:', event.clientId);
                 }
+            } else {
+                console.log('SW: No files found in FormData.');
             }
 
             // Respond with the app shell to launch the PWA.
