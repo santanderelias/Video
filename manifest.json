@@ -31,7 +31,7 @@
     {
       "action": "index.html",
       "accept": {
-        "video/*": []
+        "video/*": [".mp4"]
       }
     }
   ]
