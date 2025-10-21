@@ -25,7 +25,13 @@ self.addEventListener('install', event => {
 
 // Intercept fetch requests
 self.addEventListener('fetch', event => {
-    // For all other (GET) requests, use a cache-first strategy.
+    // We only want to handle GET requests for caching.
+    // Other requests, like the POST from a share target, should be ignored.
+    if (event.request.method !== 'GET') {
+        return;
+    }
+
+    // For GET requests, use a cache-first strategy.
     event.respondWith(
         caches.match(event.request)
             .then(response => {
