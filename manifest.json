@@ -6,6 +6,7 @@
   "background_color": "#121212",
   "theme_color": "#007bff",
   "description": "A simple PWA video player.",
+  "version": "1.0",
   "icons": [
     {
       "src": "icons/icon-192x192.png",
