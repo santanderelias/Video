@@ -25,7 +25,7 @@ The project is a Progressive Web App (PWA) video player built with vanilla JavaS
 - Works offline (app shell is cached).
 - Appears as a target in Android's "Share" menu for video files and successfully plays shared videos.
 - Designed to appear in Android's "Open with" menu for video files.
-- Includes the Eruda mobile developer console for debugging.
+
 - Displays the app version (v1.5) in the bottom-right corner.
 
 ---
@@ -47,12 +47,9 @@ The project underwent several iterations:
     *   **Share Target:** The manifest was updated with `share_target` to allow the app to receive videos from Android's "Share" menu.
     *   **File Handling:** The manifest was updated with `file_handlers` to register the app for the "Open with" menu.
 8.  **Developer Tools:**
-    *   **Eruda Console:** The Eruda mobile console was integrated.
     *   **Version Display:** A version number was added to the UI.
 9.  **Bug Fixing & Refinements:**
     *   Corrected paths in the service worker and manifest to support hosting in a subdirectory (`/video/`).
-    *   Fixed a critical bug where the Eruda script crashed on load by moving it to the `<head>` and correcting its initialization logic.
-    *   Fixed a bug in the service worker that prevented it from handling "Share" actions correctly.
     *   Fixed a memory leak in the local file playback logic by ensuring temporary object URLs were revoked.
     *   **Implemented robust "Share" target handling**: Modified `sw.js` to use IndexedDB for temporary storage of shared files, and `script.js` to retrieve and play them, resolving the issue where shared videos were not playing.
     *   **Ongoing "Open with" debugging**: Investigated `file_handlers` recognition issues, including `manifest.json` syntax, `display_override`, and `action` path variations. The "File Handlers" section is currently not appearing in DevTools.
