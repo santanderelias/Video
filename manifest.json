@@ -31,7 +31,13 @@
     {
       "action": "index.html",
       "accept": {
-        "video/*": [".mp4"]
+        "video/*": [
+          ".mp4",
+          ".webm",
+          ".ogg",
+          ".mov",
+          ".mkv"
+        ]
       }
     }
   ]
