@@ -1,4 +1,4 @@
-const CACHE_NAME = 'video-player-cache-v1.4'; // Increment version
+const CACHE_NAME = 'video-player-cache-v1.5'; // Increment version
 const urlsToCache = [
     '.', // Use '.' to refer to the current directory
     'index.html',

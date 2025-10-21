@@ -30,7 +30,7 @@
   },
   "file_handlers": [
     {
-      "action": "index.html",
+      "action": "/video/index.html",
       "accept": {
         "video/*": [
           ".mp4",
