@@ -1,4 +1,4 @@
-const CACHE_NAME = 'video-player-cache-v1.5'; // Increment version
+const CACHE_NAME = 'video-player-cache-v1.8'; // Increment version
 const urlsToCache = [
     '.', // Use '.' to refer to the current directory
     'index.html',
@@ -7,6 +7,8 @@ const urlsToCache = [
     'manifest.json',
     'icons/icon-192x192.png',
     'icons/icon-512x512.png',
+    'icons/icon-192x192-black.svg',
+    'icons/icon-512x512-black.svg',
     'https://vjs.zencdn.net/8.10.0/video-js.css',
     'https://vjs.zencdn.net/8.10.0/video.min.js'
 ];
