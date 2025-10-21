@@ -1,4 +1,4 @@
-const CACHE_NAME = 'video-player-cache-v4'; // Increment version
+const CACHE_NAME = 'video-player-cache-v5'; // Increment version
 const urlsToCache = [
     '.', // Use '.' to refer to the current directory
     'index.html',
@@ -41,6 +41,48 @@ self.addEventListener('activate', event => {
     );
 });
 
+// IndexedDB setup for shared files
+const DB_NAME = 'shared-files-db';
+const STORE_NAME = 'shared-files';
+
+function openDb() {
+    return new Promise((resolve, reject) => {
+        const request = indexedDB.open(DB_NAME, 1);
+
+        request.onupgradeneeded = (event) => {
+            const db = event.target.result;
+            db.createObjectStore(STORE_NAME, { keyPath: 'id', autoIncrement: true });
+        };
+
+        request.onsuccess = (event) => {
+            resolve(event.target.result);
+        };
+
+        request.onerror = (event) => {
+            reject('Error opening IndexedDB:', event.target.error);
+        };
+    });
+}
+
+async function storeSharedFile(file) {
+    const db = await openDb();
+    const transaction = db.transaction(STORE_NAME, 'readwrite');
+    const store = transaction.objectStore(STORE_NAME);
+    return new Promise((resolve, reject) => {
+        const request = store.add({
+            name: file.name,
+            type: file.type,
+            size: file.size,
+            lastModified: file.lastModified,
+            blob: file // Store the Blob directly
+        });
+
+        request.onsuccess = () => resolve();
+        request.onerror = (event) => reject('Error storing file:', event.target.error);
+    });
+}
+
+
 // Intercept fetch requests
 self.addEventListener('fetch', event => {
     const url = new URL(event.request.url);
@@ -54,24 +96,10 @@ self.addEventListener('fetch', event => {
             console.log('SW: FormData parsed. Found files:', files.length);
 
             if (files.length > 0) {
-                // Instead of event.clientId, use self.clients.matchAll()
-                const clients = await self.clients.matchAll({ includeUncontrolled: true, type: 'window' });
-                if (clients && clients.length > 0) {
-                    console.log('SW: Found clients. Sending message to all clients.');
-                    for (const client of clients) {
-                        // Send each file as a Blob to the client
-                        for (const file of files) {
-                            client.postMessage({
-                                type: 'shared-file',
-                                file: file
-                            });
-                            console.log('SW: Sent file:', file.name, 'to client:', client.url);
-                        }
-                    }
-                } else {
-                    console.log('SW: No active clients found to postMessage to.');
-                    // Option: Store the file in IndexedDB here and let the client retrieve it later.
-                    // For now, we'll just log this.
+                console.log('SW: Storing shared file(s) in IndexedDB.');
+                for (const file of files) {
+                    await storeSharedFile(file);
+                    console.log('SW: Stored file:', file.name, 'in IndexedDB.');
                 }
             } else {
                 console.log('SW: No files found in FormData.');

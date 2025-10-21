@@ -1,3 +1,47 @@
+const DB_NAME = 'shared-files-db';
+const STORE_NAME = 'shared-files';
+
+function openDb() {
+    return new Promise((resolve, reject) => {
+        const request = indexedDB.open(DB_NAME, 1);
+
+        request.onupgradeneeded = (event) => {
+            const db = event.target.result;
+            db.createObjectStore(STORE_NAME, { keyPath: 'id', autoIncrement: true });
+        };
+
+        request.onsuccess = (event) => {
+            resolve(event.target.result);
+        };
+
+        request.onerror = (event) => {
+            reject('Error opening IndexedDB:', event.target.error);
+        };
+    });
+}
+
+async function getSharedFiles() {
+    const db = await openDb();
+    const transaction = db.transaction(STORE_NAME, 'readonly');
+    const store = transaction.objectStore(STORE_NAME);
+    return new Promise((resolve, reject) => {
+        const request = store.getAll();
+        request.onsuccess = () => resolve(request.result);
+        request.onerror = (event) => reject('Error getting files:', event.target.error);
+    });
+}
+
+async function clearSharedFiles() {
+    const db = await openDb();
+    const transaction = db.transaction(STORE_NAME, 'readwrite');
+    const store = transaction.objectStore(STORE_NAME);
+    return new Promise((resolve, reject) => {
+        const request = store.clear();
+        request.onsuccess = () => resolve();
+        request.onerror = (event) => reject('Error clearing files:', event.target.error);
+    });
+}
+
 let player; // Declare player globally or in a scope accessible to playFile
 let currentObjectUrl = null; // Keep track of the current object URL
 
@@ -81,4 +125,24 @@ document.addEventListener('DOMContentLoaded', () => {
             playFile(file);
         }
     });
+
+    // Check for shared files from IndexedDB on load
+    (async () => {
+        try {
+            const sharedFiles = await getSharedFiles();
+            if (sharedFiles && sharedFiles.length > 0) {
+                console.log('Main: Found shared files in IndexedDB:', sharedFiles.length);
+                // Assuming only one file is shared at a time for video playback
+                const fileToPlay = sharedFiles[0].blob;
+                // Re-attach name and type for playFile function, as Blob doesn't inherently carry them
+                Object.defineProperty(fileToPlay, 'name', { value: sharedFiles[0].name });
+                Object.defineProperty(fileToPlay, 'type', { value: sharedFiles[0].type });
+                playFile(fileToPlay);
+                await clearSharedFiles(); // Clear after playing
+                console.log('Main: Shared files cleared from IndexedDB.');
+            }
+        } catch (error) {
+            console.error('Main: Error handling shared files from IndexedDB:', error);
+        }
+    })();
 });
