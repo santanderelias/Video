@@ -1,4 +1,4 @@
-const CACHE_NAME = 'video-player-cache-v1';
+const CACHE_NAME = 'video-player-cache-v2'; // Increment version
 const urlsToCache = [
     '.', // Use '.' to refer to the current directory
     'index.html',
@@ -13,6 +13,7 @@ const urlsToCache = [
 
 // Install a service worker
 self.addEventListener('install', event => {
+    console.log('Service Worker installing. Cache version:', CACHE_NAME); // Log version
     // Perform install steps
     event.waitUntil(
         caches.open(CACHE_NAME)
@@ -20,6 +21,23 @@ self.addEventListener('install', event => {
                 console.log('Opened cache');
                 return cache.addAll(urlsToCache);
             })
+    );
+});
+
+// Activate event: Clean up old caches
+self.addEventListener('activate', event => {
+    console.log('Service Worker activating. Cache version:', CACHE_NAME); // Log version
+    event.waitUntil(
+        caches.keys().then(cacheNames => {
+            return Promise.all(
+                cacheNames.map(cacheName => {
+                    if (cacheName !== CACHE_NAME) {
+                        console.log('Deleting old cache:', cacheName);
+                        return caches.delete(cacheName);
+                    }
+                })
+            );
+        })
     );
 });
 

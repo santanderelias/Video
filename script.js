@@ -62,6 +62,11 @@ document.addEventListener('DOMContentLoaded', () => {
         navigator.serviceWorker.register('sw.js')
             .then((registration) => {
                 console.log('Service Worker registered with scope:', registration.scope);
+                if (navigator.serviceWorker.controller) {
+                    console.log('Page is controlled by Service Worker:', navigator.serviceWorker.controller.scriptURL);
+                } else {
+                    console.log('Page is NOT controlled by a Service Worker yet.');
+                }
             })
             .catch((error) => {
                 console.error('Service Worker registration failed:', error);
