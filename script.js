@@ -39,13 +39,26 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 3. Handle Shared Files (Web Share Target API)
     if ('launchQueue' in window) {
+        console.log('App launched, launchQueue is available.');
         launchQueue.setConsumer(async (launchParams) => {
-            if (!launchParams.files || launchParams.files.length === 0) {
-                return;
+            console.log('launchQueue consumer triggered.');
+            console.log('launchParams:', JSON.stringify(launchParams, null, 2));
+
+            if (launchParams && launchParams.files && launchParams.files.length > 0) {
+                console.log('File handles found in launchParams.');
+                try {
+                    const fileHandle = launchParams.files[0];
+                    const file = await fileHandle.getFile();
+                    console.log('File obtained from handle:', file.name, file.type);
+                    playFile(file);
+                } catch (error) {
+                    console.error('Error getting file from handle:', error);
+                }
+            } else {
+                console.log('No file handles found in launchParams.');
             }
-            const fileHandle = launchParams.files[0];
-            const file = await fileHandle.getFile();
-            playFile(file);
         });
+    } else {
+        console.log('launchQueue API not supported.');
     }
 });
