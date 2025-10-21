@@ -46,6 +46,14 @@ if ('launchQueue' in window) {
     console.log('launchQueue API not supported.');
 }
 
+// Listen for messages from the Service Worker
+navigator.serviceWorker.addEventListener('message', (event) => {
+    if (event.data && event.data.type === 'shared-file' && event.data.file) {
+        console.log('Received shared file from Service Worker:', event.data.file.name);
+        playFile(event.data.file);
+    }
+});
+
 document.addEventListener('DOMContentLoaded', () => {
     player = videojs('my-video'); // Initialize player here
 
