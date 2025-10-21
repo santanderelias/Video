@@ -3,6 +3,7 @@
   "short_name": "Video",
   "start_url": ".",
   "display": "standalone",
+  "display_override": ["window-controls-overlay", "standalone", "fullscreen"],
   "background_color": "#121212",
   "theme_color": "#007bff",
   "description": "A simple PWA video player.",
