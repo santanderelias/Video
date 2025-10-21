@@ -25,15 +25,6 @@ self.addEventListener('install', event => {
 
 // Intercept fetch requests
 self.addEventListener('fetch', event => {
-    const url = new URL(event.request.url);
-
-    // For share targets, the browser sends a POST request.
-    // We need to respond with the app shell (index.html) from the cache.
-    if (event.request.method === 'POST' && url.origin === self.location.origin) {
-        event.respondWith(caches.match('index.html'));
-        return;
-    }
-
     // For all other (GET) requests, use a cache-first strategy.
     event.respondWith(
         caches.match(event.request)

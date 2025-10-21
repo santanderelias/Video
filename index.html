@@ -1,43 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!-- Eruda script and initialization should be first -->
-    <script src="//cdn.jsdelivr.net/npm/eruda"></script>
-    <script>
-        (function () {
-            if (typeof eruda === 'undefined') return;
-            let el = document.createElement('div');
-            document.body.appendChild(el);
-
-            eruda.init({
-                container: el,
-                tool: ['console', 'elements', 'network', 'resources', 'info', 'settings'],
-                useShadowDom: true
-            });
-
-            try {
-                const savedSettings = localStorage.getItem('eruda-settings');
-                if (savedSettings) {
-                    eruda.get('settings').set(JSON.parse(savedSettings));
-                }
-            } catch (e) {
-                console.error('Could not apply Eruda settings from localStorage', e);
-            }
-
-            const settings = eruda.get('settings');
-            if (settings) {
-                let isInitialized = false;
-                settings.on('change', () => {
-                    if (isInitialized) {
-                        const currentSettings = settings.getAll();
-                        localStorage.setItem('eruda-settings', JSON.stringify(currentSettings));
-                    }
-                    isInitialized = true;
-                });
-            }
-        })();
-    </script>
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Video Player</title>
@@ -53,7 +16,6 @@
                 class="video-js vjs-default-skin"
                 controls
                 preload="auto"
-                poster="placeholder.png"
                 data-setup='{ "fluid": true }'
             >
                 <p class="vjs-no-js">

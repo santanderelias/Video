@@ -19,7 +19,7 @@
     }
   ],
   "share_target": {
-    "action": "/video/index.html",
+    "action": ".",
     "method": "POST",
     "enctype": "multipart/form-data",
     "params": {
@@ -33,7 +33,7 @@
   },
   "file_handlers": [
     {
-      "action": "/video/index.html",
+      "action": ".",
       "accept": {
         "video/*": [
           ".mp4",
