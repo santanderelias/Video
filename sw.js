@@ -25,22 +25,22 @@ self.addEventListener('install', event => {
 
 // Intercept fetch requests
 self.addEventListener('fetch', event => {
-    // We only want to handle GET requests for caching.
-    // Other requests, like the POST from a share target, should be ignored.
-    if (event.request.method !== 'GET') {
+    const url = new URL(event.request.url);
+
+    // If the request is a POST to the app's origin, it's the share target.
+    // Respond with the app shell to launch the PWA.
+    if (event.request.method === 'POST' && url.origin === self.location.origin) {
+        event.respondWith(caches.match('index.html'));
         return;
     }
 
-    // For GET requests, use a cache-first strategy.
+    // For all GET requests, use a cache-first strategy.
     event.respondWith(
-        caches.match(event.request)
-            .then(response => {
-                // Cache hit - return response
-                if (response) {
-                    return response;
-                }
-                // Not in cache - fetch from network
-                return fetch(event.request);
-            })
+        caches.match(event.request).then(response => {
+            if (response) {
+                return response; // Serve from cache
+            }
+            return fetch(event.request); // Fetch from network
+        })
     );
 });
