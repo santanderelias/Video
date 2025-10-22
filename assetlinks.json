@@ -1,0 +1,10 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "io.github.santanderelias.twa",
+      "sha256_cert_fingerprints": ["D2:88:19:7B:9B:02:E1:C8:77:94:66:A9:46:9A:1A:59:2E:4E:27:9A:45:0A:DE:E5:C0:DE:AD:86:4D:DF:19:4A"]
+    }
+  }
+]

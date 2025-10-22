@@ -26,7 +26,7 @@ The project is a Progressive Web App (PWA) video player built with vanilla JavaS
 - Appears as a target in Android's "Share" menu for video files and successfully plays shared videos.
 - Designed to appear in Android's "Open with" menu for video files.
 
-- Displays the app version (v1.5) in the bottom-right corner.
+- Displays the app version (v1.9) in the bottom-right corner.
 
 ---
 
@@ -52,37 +52,46 @@ The project underwent several iterations:
     *   Corrected paths in the service worker and manifest to support hosting in a subdirectory (`/video/`).
     *   Fixed a memory leak in the local file playback logic by ensuring temporary object URLs were revoked.
     *   **Implemented robust "Share" target handling**: Modified `sw.js` to use IndexedDB for temporary storage of shared files, and `script.js` to retrieve and play them, resolving the issue where shared videos were not playing.
-    *   **Ongoing "Open with" debugging**: Investigated `file_handlers` recognition issues, including `manifest.json` syntax, `display_override`, and `action` path variations. The "File Handlers" section is currently not appearing in DevTools.
+    *   **Resolved TWA Display Issue**: Ensured `assetlinks.json` is correctly served via GitHub Pages (using `.nojekyll` workaround) and updated `twa-manifest.json` to `display: "fullscreen"` for a truly immersive experience.
+    *   **Ongoing "Open with" and Core Functionality Debugging**: Investigating `file_handlers` recognition and general core functionality within the TWA. Extensive logging has been added to `sw.js` and `script.js` to diagnose issues.
 
 ---
 
-## 3. Debugging Plan for "Open with" Feature
+## 3. Debugging Plan for Core Functionality in TWA
 
-If the app is still not appearing in the "Open with" menu, follow these steps to diagnose the issue:
+The app is now installable via APK and appears in Android's "Open with" options. The primary issue is that the core functionality (playing videos, especially shared or opened files) is not working correctly within the TWA.
 
-### Step 1: Confirm the PWA Installation (The "Golden Rule")
-The operating system only registers file handling capabilities when the app is installed.
+To diagnose this, we have added extensive logging to `sw.js` and `script.js`. Follow these steps to help us pinpoint the problem:
 
-*   **Action:** Ensure you have completely **uninstalled** the PWA from your device and then **re-installed** it after the latest changes to `manifest.json`.
-*   **Why:** Android will not re-read the manifest of an already-installed PWA. A fresh installation is required.
+### Step 1: Rebuild and Install the APK
+*   **Action:** Rebuild your Android application to include the latest changes (updated web app files, `twa-manifest.json` display mode).
+*   **Action:** **Crucially, uninstall the existing "Video Player" app from your Android device before installing the new APK.** This ensures that the updated service worker and web app files are loaded correctly.
+*   **Action:** Install the newly built APK on your Android device.
 
-### Step 2: Use Browser Developer Tools to Inspect the Manifest
-The browser's tools are the best way to check if it understands your manifest file.
+### Step 2: Test Functionality and Collect Logs
+*   **Test Display**: Verify that the TWA launches in a full-screen, immersive mode without the top bar (URL/name and close button).
+*   **Test Share**: From another app (e.g., Gallery, Files), share a video file to your "Video Player" app.
+*   **Test Open with**: From a file manager, open a video file with your "Video Player" app.
+*   **Test Local File Input**: Within the app, try selecting a video file using the "Choose a local video file" button.
+*   **Collect Logs**:
+    *   **Recommended (Chrome DevTools for Remote Debugging)**:
+        1.  Connect your Android device to your computer via USB.
+        2.  Enable USB debugging on your Android device (usually in Developer Options).
+        3.  On your computer, open Chrome and go to `chrome://inspect/#devices`.
+        4.  You should see your Android device listed. Under your device, you should see your TWA listed as a "WebViews" or "Service Workers" target. Click "inspect" next to it.
+        5.  The Chrome DevTools window will open. All the `console.log` messages from `sw.js` and `script.js` (prefixed with "Main:" or "SW:") will appear in the "Console" tab.
+    *   **Alternative (`adb logcat`)**:
+        1.  Ensure you have ADB (Android Debug Bridge) installed and configured.
+        2.  Connect your Android device to your computer via USB.
+        3.  Open a terminal or command prompt and run:
+            ```bash
+            adb logcat | grep "Main:\|SW:"
+            ```
+            This will filter the logs to show messages from your web app's `console.log` statements.
 
-*   **Action:**
-    1.  Open the app's URL in Chrome on your desktop.
-    2.  Press `F12` to open DevTools.
-    3.  Go to the **"Application"** panel.
-    4.  Select **"Manifest"** from the left menu.
-*   **What to Look For:**
-    *   Scroll down to the **"File Handlers"** section. Check if it's present and if there are any error or warning icons next to it. The browser will often give a specific reason if it rejects the entry.
+### Step 3: Provide Logs
+*   **Action**: Please share the collected logs with me. The more detailed the logs, the easier it will be to pinpoint the exact point of failure.
 
-### Step 3: Check for Browser and OS Compatibility
-The File Handling API is a relatively new feature.
+---
 
-*   **Action:** Verify that your specific browser and Android version fully support the API. Search online for "caniuse File Handling API" or for your specific browser's documentation.
-
-### Step 4: Experiment with the `action` Path
-If the above steps don't reveal the problem, the `action` path in the manifest is the next most likely culprit.
-
-*   **Action:** Try changing the `action` path in `manifest.json` from `/video/index.html` back to a relative path like `index.html` or `.`. Remember to re-install the PWA after any change.
+Once you've provided the logs, we can analyze them to understand why the core functionality is failing within the TWA.

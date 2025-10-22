@@ -1,4 +1,4 @@
-const CACHE_NAME = 'video-player-cache-v1.8'; // Increment version
+const CACHE_NAME = 'video-player-cache-v1.9'; // Increment version
 const urlsToCache = [
     '.', // Use '.' to refer to the current directory
     'index.html',
@@ -91,26 +91,36 @@ self.addEventListener('fetch', event => {
 
     // If the request is a POST to the app's origin, it's the share target.
     if (event.request.method === 'POST' && url.origin === self.location.origin) {
+        console.log('SW: Intercepted POST request for share target.');
+        console.log('SW: Request URL:', event.request.url);
+        console.log('SW: Request Origin:', url.origin);
+        console.log('SW: Self Location Origin:', self.location.origin);
+
         event.respondWith(async function() {
-            console.log('SW: Intercepted POST request for share target.');
-            const formData = await event.request.formData();
-            const files = formData.getAll('video'); // 'video' is the name from manifest.json params
-            console.log('SW: FormData parsed. Found files:', files.length);
+            try {
+                const formData = await event.request.formData();
+                const files = formData.getAll('video'); // 'video' is the name from manifest.json params
+                console.log('SW: FormData parsed. Found files:', files.length);
 
-            if (files.length > 0) {
-                console.log('SW: Storing shared file(s) in IndexedDB.');
-                for (const file of files) {
-                    await storeSharedFile(file);
-                    console.log('SW: Stored file:', file.name, 'in IndexedDB.');
+                if (files.length > 0) {
+                    console.log('SW: Storing shared file(s) in IndexedDB.');
+                    for (const file of files) {
+                        console.log('SW: File to store:', file.name, file.type, file.size);
+                        await storeSharedFile(file);
+                        console.log('SW: Stored file:', file.name, 'in IndexedDB.');
+                    }
+                } else {
+                    console.log('SW: No files found in FormData.');
                 }
-            } else {
-                console.log('SW: No files found in FormData.');
-            }
 
-            // Respond with the app shell to launch the PWA.
-            // After processing the share, redirect to a clean URL to avoid re-processing on refresh.
-            // A 303 See Other redirect is recommended.
-            return Response.redirect('index.html', 303);
+                // Respond with the app shell to launch the PWA.
+                // After processing the share, redirect to a clean URL to avoid re-processing on refresh.
+                // A 303 See Other redirect is recommended.
+                return Response.redirect('index.html', 303);
+            } catch (error) {
+                console.error('SW: Error processing share target:', error);
+                return new Response('Error processing share target', { status: 500 });
+            }
         }());
         return;
     }

@@ -1,0 +1,19 @@
+# Android specific ignores
+android.keystore
+local.properties
+
+# Build artifacts
+app/build/
+build/
+*.apk
+*.aab
+manifest-checksum.txt
+*.idsig
+
+# Gradle files
+.gradle/
+
+# IDE specific files
+.idea/
+*.iml
+.DS_Store

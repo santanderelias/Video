@@ -1,0 +1,74 @@
+{
+  "packageId": "io.github.santanderelias.twa",
+  "host": "santanderelias.github.io",
+  "name": "Video Player",
+  "launcherName": "Video",
+  "display": "fullscreen",
+  "themeColor": "#121212",
+  "themeColorDark": "#000000",
+  "navigationColor": "#000000",
+  "navigationColorDark": "#000000",
+  "navigationDividerColor": "#000000",
+  "navigationDividerColorDark": "#000000",
+  "backgroundColor": "#000000",
+  "enableNotifications": true,
+  "startUrl": "/video/",
+  "iconUrl": "https://santanderelias.github.io/video/icons/icon-512x512.png",
+  "maskableIconUrl": "https://santanderelias.github.io/video/icons/icon-512x512.png",
+  "monochromeIconUrl": "https://santanderelias.github.io/video/icons/icon-192x192.png",
+  "splashScreenFadeOutDuration": 300,
+  "signingKey": {
+    "path": "/home/elias/Dev/video/android.keystore",
+    "alias": "android"
+  },
+  "appVersionName": "1.9",
+  "appVersionCode": 9,
+  "shortcuts": [],
+  "generatorApp": "bubblewrap-cli",
+  "webManifestUrl": "https://santanderelias.github.io/video/manifest.json",
+  "fallbackType": "customtabs",
+  "features": {},
+  "alphaDependencies": {
+    "enabled": false
+  },
+  "enableSiteSettingsShortcut": true,
+  "isChromeOSOnly": false,
+  "isMetaQuest": false,
+  "fullScopeUrl": "https://santanderelias.github.io/video/",
+  "minSdkVersion": 21,
+  "shareTarget": {
+    "action": "https://santanderelias.github.io/video/index.html",
+    "method": "POST",
+    "enctype": "multipart/form-data",
+    "params": {
+      "files": [
+        {
+          "name": "video",
+          "accept": [
+            "video/*"
+          ]
+        }
+      ]
+    }
+  },
+  "orientation": "any",
+  "fingerprints": [],
+  "additionalTrustedOrigins": [],
+  "retainedBundles": [],
+  "protocolHandlers": [],
+  "fileHandlers": [
+    {
+      "actionUrl": "https://santanderelias.github.io/video/index.html",
+      "mimeTypes": [
+        "video/*"
+      ]
+    }
+  ],
+  "launchHandlerClientMode": "",
+  "displayOverride": [
+    "window-controls-overlay",
+    "standalone",
+    "fullscreen"
+  ],
+  "appVersion": "1.9"
+}
