@@ -62,6 +62,9 @@ async function clearSharedFiles() {
 let player; // Declare player globally or in a scope accessible to playFile
 let currentObjectUrl = null; // Keep track of the current object URL
 
+const videoContainer = document.querySelector('.video-wrapper');
+const greetingMessage = document.getElementById('greeting-message');
+
 // --- Helper function to play a file ---
 const playFile = (file) => {
     console.log('Main: playFile called with file:', file.name, file.type, file.size);
@@ -81,6 +84,9 @@ const playFile = (file) => {
             console.log('Main: Setting video source to:', fileURL, 'type:', fileType);
             player.src({ src: fileURL, type: fileType });
             player.play();
+            // Hide greeting and show video player
+            if (greetingMessage) greetingMessage.style.display = 'none';
+            if (videoContainer) videoContainer.style.display = 'flex';
         } else {
             console.error('Main: Video.js player not initialized yet.');
         }
@@ -129,6 +135,10 @@ document.addEventListener('DOMContentLoaded', () => {
     player = videojs('my-video'); // Initialize player here
     console.log('Main: Video.js player initialized.', player);
 
+    // Initially hide video player and show greeting
+    if (videoContainer) videoContainer.style.display = 'none';
+    if (greetingMessage) greetingMessage.style.display = 'flex';
+
     // 1. PWA Service Worker Registration
     if ('serviceWorker' in navigator) {
         console.log('Main: Service Worker API supported.');
@@ -146,23 +156,6 @@ document.addEventListener('DOMContentLoaded', () => {
             });
     } else {
         console.log('Main: Service Worker API not supported.');
-    }
-
-    // 2. Local File Playback Logic (from file input)
-    const fileInput = document.getElementById('local-video-input');
-    if (fileInput) {
-        fileInput.addEventListener('change', (event) => {
-            console.log('Main: Local file input change event.');
-            const file = event.target.files[0];
-            if (file) {
-                console.log('Main: Selected local file:', file.name, file.type, file.size);
-                playFile(file);
-            } else {
-                console.log('Main: No local file selected.');
-            }
-        });
-    } else {
-        console.error('Main: Local video input element not found.');
     }
 
     // Check for shared files from IndexedDB on load

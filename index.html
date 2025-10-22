@@ -25,11 +25,13 @@
                 </p>
             </video>
         </div>
-        <div class="file-input-container">
+        <div class="file-input-container" style="display: none;">
             <label for="local-video-input" class="file-label">Choose a local video file</label>
             <input type="file" id="local-video-input" accept="video/*">
         </div>
     </div>
+
+    <div id="greeting-message" style="display: flex; justify-content: center; align-items: center; height: 100vh; font-size: 2em; color: white;">Hello</div>
 
     <script src="lib/video.min.js"></script>
     <script src="script.js"></script>

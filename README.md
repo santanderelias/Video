@@ -55,6 +55,7 @@ The project underwent several iterations:
     *   **Resolved TWA Display Issue**: Ensured `assetlinks.json` is correctly served via GitHub Pages (using `.nojekyll` workaround) and updated `twa-manifest.json` to `display: "fullscreen"` for a truly immersive experience.
     *   **Fixed Service Worker Installation & CDN Reliance**: Removed problematic entries from `sw.js`'s `urlsToCache` (e.g., `'.'`), localized CDN resources (Video.js CSS/JS) to the `lib/` directory, and added robust error logging to `cache.addAll()`. This resolves the "site can't be reached" error during service worker installation.
     *   **Improved App Icon Display**: Updated `manifest.json` and `twa-manifest.json` to use existing black SVG icons (`black_192.svg`, `black_512.svg`) for better contrast against Android's adaptive icon backgrounds.
+    *   **Full-Screen Video Player & Greeting**: Implemented a full-screen video player layout, removed the local file input button, and added a greeting message ("Hello") when no video is loaded.
     *   **Ongoing Core Functionality Debugging**: Investigating general core functionality within the TWA. Extensive logging has been added to `sw.js` and `script.js` to diagnose issues.
 
 ---
@@ -72,9 +73,10 @@ To diagnose this, we have added extensive logging to `sw.js` and `script.js`. Fo
 
 ### Step 2: Test Functionality and Collect Logs
 *   **Test Display**: Verify that the TWA launches in a full-screen, immersive mode without the top bar (URL/name and close button).
+*   **Test Greeting**: Verify that the "Hello" greeting message is displayed when the app is opened without a video.
 *   **Test Share**: From another app (e.g., Gallery, Files), share a video file to your "Video Player" app.
 *   **Test Open with**: From a file manager, open a video file with your "Video Player" app.
-*   **Test Local File Input**: Within the app, try selecting a video file using the "Choose a local video file" button.
+
 *   **Collect Logs**:
     *   **Recommended (Chrome DevTools for Remote Debugging)**:
         1.  Connect your Android device to your computer via USB.
