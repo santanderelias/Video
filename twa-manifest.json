@@ -22,7 +22,7 @@
     "alias": "android"
   },
   "appVersionName": "1.9.2",
-  "appVersionCode": 11,
+  "appVersionCode": 12,
   "shortcuts": [],
   "generatorApp": "bubblewrap-cli",
   "webManifestUrl": "https://santanderelias.github.io/video/manifest.json",
