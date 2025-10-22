@@ -4,24 +4,24 @@
   "name": "Video Player",
   "launcherName": "Video",
   "display": "fullscreen",
-  "themeColor": "#121212",
-  "themeColorDark": "#000000",
-  "navigationColor": "#000000",
-  "navigationColorDark": "#000000",
-  "navigationDividerColor": "#000000",
-  "navigationDividerColorDark": "#000000",
-  "backgroundColor": "#121212",
+  "themeColor": "#FFFFFF",
+  "themeColorDark": "#FFFFFF",
+  "navigationColor": "#FFFFFF",
+  "navigationColorDark": "#FFFFFF",
+  "navigationDividerColor": "#FFFFFF",
+  "navigationDividerColorDark": "#FFFFFF",
+  "backgroundColor": "#FFFFFF",
   "enableNotifications": true,
   "startUrl": "/video/",
-  "iconUrl": "https://santanderelias.github.io/video/icons/icon-512x512.png",
-  "maskableIconUrl": "https://santanderelias.github.io/video/icons/icon-512x512.png",
-  "monochromeIconUrl": "https://santanderelias.github.io/video/icons/black_192.svg",
+  "iconUrl": "icons/black_512.svg",
+  "maskableIconUrl": "icons/black_512.svg",
+  "monochromeIconUrl": "icons/black_192.svg",
   "splashScreenFadeOutDuration": 300,
   "signingKey": {
     "path": "/home/elias/Dev/video/android.keystore",
     "alias": "android"
   },
-  "appVersionName": "1.9.2",
+  "appVersionName": "1.9.3",
   "appVersionCode": 12,
   "shortcuts": [],
   "generatorApp": "bubblewrap-cli",
@@ -70,5 +70,5 @@
     "standalone",
     "fullscreen"
   ],
-  "appVersion": "1.9.2"
+  "appVersion": "1.9.3"
 }
