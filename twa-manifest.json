@@ -13,9 +13,9 @@
   "backgroundColor": "#FFFFFF",
   "enableNotifications": true,
   "startUrl": "/video/",
-  "iconUrl": "icons/black_512.svg",
-  "maskableIconUrl": "icons/black_512.svg",
-  "monochromeIconUrl": "icons/black_192.svg",
+  "iconUrl": "https://santanderelias.github.io/video/icons/black_512.svg",
+  "maskableIconUrl": "https://santanderelias.github.io/video/icons/black_512.svg",
+  "monochromeIconUrl": "https://santanderelias.github.io/video/icons/black_192.svg",
   "splashScreenFadeOutDuration": 300,
   "signingKey": {
     "path": "/home/elias/Dev/video/android.keystore",
