@@ -1,27 +1,36 @@
-const CACHE_NAME = 'video-player-cache-v1.9'; // Increment version
+const CACHE_NAME = 'video-player-cache-v1.9.1'; // Increment version
 const urlsToCache = [
-    '.', // Use '.' to refer to the current directory
     'index.html',
     'style.css',
     'script.js',
     'manifest.json',
     'icons/icon-192x192.png',
     'icons/icon-512x512.png',
-    'icons/icon-192x192-black.svg',
-    'icons/icon-512x512-black.svg',
-    'https://vjs.zencdn.net/8.10.0/video-js.css',
-    'https://vjs.zencdn.net/8.10.0/video.min.js'
+    'lib/video-js.css',
+    'lib/video.min.js'
 ];
 
 // Install a service worker
 self.addEventListener('install', event => {
-    console.log('Service Worker installing. Cache version:', CACHE_NAME); // Log version
+    console.log('SW: Service Worker installing. Cache version:', CACHE_NAME); // Log version
     // Perform install steps
     event.waitUntil(
         caches.open(CACHE_NAME)
             .then(cache => {
-                console.log('Opened cache');
-                return cache.addAll(urlsToCache);
+                console.log('SW: Opened cache');
+                return cache.addAll(urlsToCache).catch(error => {
+                    console.error('SW: cache.addAll failed:', error);
+                    // Log which URL failed if possible
+                    Promise.all(urlsToCache.map(url => fetch(url).then(response => {
+                        if (!response.ok) {
+                            console.error('SW: Failed to fetch URL:', url, response.status, response.statusText);
+                        }
+                        return response;
+                    }))).catch(fetchError => {
+                        console.error('SW: Individual fetch error during addAll debug:', fetchError);
+                    });
+                    throw error; // Re-throw to ensure install fails
+                });
             })
     );
 });

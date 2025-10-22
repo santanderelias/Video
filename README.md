@@ -26,7 +26,7 @@ The project is a Progressive Web App (PWA) video player built with vanilla JavaS
 - Appears as a target in Android's "Share" menu for video files and successfully plays shared videos.
 - Designed to appear in Android's "Open with" menu for video files.
 
-- Displays the app version (v1.9) in the bottom-right corner.
+- Displays the app version (v1.9.1) in the bottom-right corner.
 
 ---
 
@@ -53,7 +53,9 @@ The project underwent several iterations:
     *   Fixed a memory leak in the local file playback logic by ensuring temporary object URLs were revoked.
     *   **Implemented robust "Share" target handling**: Modified `sw.js` to use IndexedDB for temporary storage of shared files, and `script.js` to retrieve and play them, resolving the issue where shared videos were not playing.
     *   **Resolved TWA Display Issue**: Ensured `assetlinks.json` is correctly served via GitHub Pages (using `.nojekyll` workaround) and updated `twa-manifest.json` to `display: "fullscreen"` for a truly immersive experience.
-    *   **Ongoing "Open with" and Core Functionality Debugging**: Investigating `file_handlers` recognition and general core functionality within the TWA. Extensive logging has been added to `sw.js` and `script.js` to diagnose issues.
+    *   **Fixed Service Worker Installation & CDN Reliance**: Removed problematic entries from `sw.js`'s `urlsToCache` (e.g., `'.'`), localized CDN resources (Video.js CSS/JS) to the `lib/` directory, and added robust error logging to `cache.addAll()`. This resolves the "site can't be reached" error during service worker installation.
+    *   **Improved App Icon Display**: Updated `manifest.json` and `twa-manifest.json` to use existing black SVG icons (`black_192.svg`, `black_512.svg`) for better contrast against Android's adaptive icon backgrounds.
+    *   **Ongoing Core Functionality Debugging**: Investigating general core functionality within the TWA. Extensive logging has been added to `sw.js` and `script.js` to diagnose issues.
 
 ---
 

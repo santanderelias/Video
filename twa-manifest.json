@@ -10,19 +10,19 @@
   "navigationColorDark": "#000000",
   "navigationDividerColor": "#000000",
   "navigationDividerColorDark": "#000000",
-  "backgroundColor": "#000000",
+  "backgroundColor": "#121212",
   "enableNotifications": true,
   "startUrl": "/video/",
-  "iconUrl": "https://santanderelias.github.io/video/icons/icon-512x512.png",
-  "maskableIconUrl": "https://santanderelias.github.io/video/icons/icon-512x512.png",
-  "monochromeIconUrl": "https://santanderelias.github.io/video/icons/icon-192x192.png",
+  "iconUrl": "https://santanderelias.github.io/video/icons/black_512.svg",
+  "maskableIconUrl": "https://santanderelias.github.io/video/icons/black_512.svg",
+  "monochromeIconUrl": "https://santanderelias.github.io/video/icons/black_192.svg",
   "splashScreenFadeOutDuration": 300,
   "signingKey": {
     "path": "/home/elias/Dev/video/android.keystore",
     "alias": "android"
   },
-  "appVersionName": "1.9",
-  "appVersionCode": 9,
+  "appVersionName": "1.9.1",
+  "appVersionCode": 10,
   "shortcuts": [],
   "generatorApp": "bubblewrap-cli",
   "webManifestUrl": "https://santanderelias.github.io/video/manifest.json",
@@ -70,5 +70,5 @@
     "standalone",
     "fullscreen"
   ],
-  "appVersion": "1.9"
+  "appVersion": "1.9.1"
 }
